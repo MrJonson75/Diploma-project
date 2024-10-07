@@ -26,6 +26,7 @@ from blog.views import page_not_found
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('blog.urls')),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
 
 ]
 
