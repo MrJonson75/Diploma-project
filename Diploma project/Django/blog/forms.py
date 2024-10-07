@@ -1,3 +1,5 @@
+from ckeditor.widgets import CKEditorWidget
+from ckeditor_uploader.widgets import CKEditorUploadingWidget
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
@@ -9,6 +11,7 @@ from .models import *
 
 class AddArticleForm(forms.ModelForm):
     '''Клас формирует форму для добавления статей'''
+    content = forms.CharField(widget=CKEditorUploadingWidget(), label='Статья')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -19,10 +22,11 @@ class AddArticleForm(forms.ModelForm):
 
     class Meta:
         model = GamePost
+        # fields = '__all__'
         fields = ['title', 'content', 'photo', 'status', 'cat']
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-input'}),
-            'content': forms.Textarea(attrs={'cols': 80, 'rows': 10}),
+            # 'content': forms.Textarea(attrs={'cols': 80, 'rows': 10}),
 
         }
 
@@ -115,3 +119,6 @@ class UserPasswordChangeForm(PasswordChangeForm):
     new_password1 = forms.CharField(label='Новый пароль', widget=forms.PasswordInput(attrs={'class': 'form-input'}))
     new_password2 = forms.CharField(label='Повторение пароля',
                                     widget=forms.PasswordInput(attrs={'class': 'form-input'}))
+
+
+

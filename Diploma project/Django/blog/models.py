@@ -1,3 +1,5 @@
+from ckeditor.fields import RichTextField
+from ckeditor_uploader.fields import RichTextUploadingField
 from django.contrib.auth.models import User
 from django.core.validators import MaxLengthValidator, MinLengthValidator
 from django.db import models
@@ -13,7 +15,8 @@ class GamePost(models.Model):
         ('published', 'Изданный'),
     ]
     title = models.CharField(max_length=255, verbose_name='Заголовок')
-    content = models.TextField(blank=True, verbose_name='Статья')
+    excerpt = RichTextField(blank=True, help_text='Краткое содержание статьи', verbose_name='Кратко')
+    content = RichTextUploadingField(blank=True, verbose_name='Статья')
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
     photo = models.ImageField(upload_to="photos/%Y/%m/%d/", verbose_name='Фото')
     time_create = models.DateTimeField(auto_now_add=True, verbose_name='Время создания')
@@ -97,10 +100,10 @@ class NewsBlock(models.Model):
     ])
     photo = models.ImageField(upload_to="photos/%Y/%m/%d/", default=None,
                               blank=True, null=True, help_text='Картинка к новости', verbose_name="Фото")
-    excerpt = models.TextField(blank=True,
-                               help_text='Краткое содержание новости, заполнять не обязательно.',
-                               verbose_name='Кратко')
-    content = models.TextField(help_text='', verbose_name='Подробно')
+    excerpt = RichTextField(blank=True,
+                            help_text='Краткое содержание новости, заполнять не обязательно.',
+                            verbose_name='Кратко')
+    content = RichTextUploadingField(help_text='', verbose_name='Подробно')
     time_create = models.DateTimeField(auto_now_add=True, verbose_name="Время создания")
     pub_date = models.DateTimeField(default=datetime.datetime.now, verbose_name='Дата публикации')
     status = models.BooleanField(choices=tuple(map(lambda x: (bool(x[0]), x[1]), Status.choices)),

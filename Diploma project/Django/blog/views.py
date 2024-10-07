@@ -1,6 +1,7 @@
 from django.contrib.auth import logout, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, PasswordChangeView
+from django.core.mail import send_mail, BadHeaderError
 from django.core.paginator import Paginator
 from django.http import HttpResponse, Http404, HttpResponseNotFound, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
@@ -29,10 +30,6 @@ class ShowNews(DetailView):
     template_name = 'blog/news_open.html'
     slug_url_kwarg = 'news_slug'
     context_object_name = 'page'
-    # page = get_object_or_404(TagNews, slug=rec)
-    # extra_context = {
-    #     'tag_news':
-    # }
 
 
 def show_tag_news(request, tag_news_slug):
@@ -177,8 +174,9 @@ class AddArticle(LoginRequiredMixin, DataMixin, CreateView):
 class UpdateArticle(DataMixin, UpdateView):
     """ Представление для редактирования статей"""
     model = GamePost
-    fields = ['title', 'content', 'photo', 'status', 'cat']
-    template_name = 'blog/post_update.html'
+    form_class = AddArticleForm
+    # fields = ['title', 'content', 'photo', 'status', 'cat']
+    template_name = 'blog/article_update.html'
     success_url = reverse_lazy('blog')
 
     def get_context_data(self, **kwargs):
@@ -277,16 +275,3 @@ class UserPasswordChange(PasswordChangeView):
     form_class = UserPasswordChangeForm
     success_url = reverse_lazy("password_change_done")
     template_name = "users/password_change_form.html"
-
-# def register(request):
-#     ''' Метод Регистрации пользователя'''
-#     if request.method == 'POST':  # проверяем что запрос ПОСТ
-#         form = RegisterUserForm(request.POST)  # сохраняем из формы данные в переменную
-#         if form.is_valid():  # Проверяем форму на валидность заполнения
-#             user = form.save(commit=False)  # commit=False откладывает сохранение данных в базу
-#             user.set_password(form.cleaned_data['password'])  # шифруем Пароль методом set_password
-#             user.save()     # записываем все в базу
-#             return render(request, 'users/register_done.html')
-#     else:
-#         form = RegisterUserForm()
-#     return render(request, 'users/register.html', {'form': form})

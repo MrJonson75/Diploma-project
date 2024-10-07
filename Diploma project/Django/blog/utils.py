@@ -29,3 +29,7 @@ class DataMixin:
 
     def get_paginate_by(self, queryset):
         return self.request.GET.get("paginate_by", self.paginate_by)
+
+
+def get_filename(filename, request):
+    return filename.upper()
