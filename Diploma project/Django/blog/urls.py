@@ -5,7 +5,9 @@ from django.urls import path, reverse_lazy
 from . import views
 
 urlpatterns = [
-    path('', views.games_platform, name='home'),
+    path('', views.NewsList.as_view(), name='home'),
+    path('news/<slug:news_slug>', views.ShowNews.as_view(), name='news'),
+    path('tag_news/<slug:tag_news_slug>', views.show_tag_news, name='tag_news'),
     path('about/', views.about, name='about'),
     path('login/', views.LoginUser.as_view(), name='login'),
     path('logout/', views.logoutuser, name='logout'),

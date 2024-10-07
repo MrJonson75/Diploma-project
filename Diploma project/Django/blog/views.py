@@ -14,6 +14,37 @@ from .utils import *
 info = {}
 
 
+class NewsList(ListView):
+    """ Представление для просмотра списка Новостей"""
+    model = NewsBlock
+    template_name = 'blog/platform.html'
+    context_object_name = 'page'
+    paginate_by = 3
+    extra_context = {'title': 'Самые свежие новости для игроков'}
+
+
+class ShowNews(DetailView):
+    """ Представление для просмотра новости"""
+    model = NewsBlock
+    template_name = 'blog/news_open.html'
+    slug_url_kwarg = 'news_slug'
+    context_object_name = 'page'
+    # page = get_object_or_404(TagNews, slug=rec)
+    # extra_context = {
+    #     'tag_news':
+    # }
+
+
+def show_tag_news(request, tag_news_slug):
+    tag = get_object_or_404(TagNews, slug=tag_news_slug)
+    news = tag.tags.filter(status=NewsBlock.Status.PUBLISHED)
+    data = {
+        'title': f'tag: {tag.tag}',
+        'page': news,
+    }
+    return render(request, 'blog/platform.html', data)
+
+
 class ArticleList(DataMixin, ListView):
     """ Представление для просмотра списка статей"""
     model = GamePost
@@ -168,12 +199,12 @@ class DeleteArticle(DataMixin, DeleteView):
         return dict(list(context.items()) + list(c_def.items()))
 
 
-def games_platform(request):
-    context = {
-        'menu': menu,
-        'title': 'Новости в мире игр'
-    }
-    return render(request, 'blog/platform.html', context=context)
+# def games_platform(request):
+#     context = {
+#         'menu': menu,
+#         'title': 'Новости в мире игр'
+#     }
+#     return render(request, 'blog/platform.html', context=context)
 
 
 def about(request):

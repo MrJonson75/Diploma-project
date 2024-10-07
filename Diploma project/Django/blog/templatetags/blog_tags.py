@@ -32,6 +32,11 @@ def show_categories(sort=None, cat_selected=0):
         return {"cats": cats, "cat_selected": cat_selected}
 
 
-@register.inclusion_tag('blog/list_tags.html')
+@register.inclusion_tag('blog/tags/list_tags.html')
 def show_all_tags():
     return {'tags': TagArticle.objects.all()}
+
+
+@register.inclusion_tag('blog/tags/list_news_tags.html')
+def show_all_news_tags():
+    return {'tag_news': TagNews.objects.all()}
