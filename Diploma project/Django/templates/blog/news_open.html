@@ -30,11 +30,11 @@
         {% endwith %}
 </div>
 
-    {% if page.photo %}
-    <p><img class="img-article-left" src="{{page.photo.url}}"></p>
-    {% endif %}
+<!--    {% if page.photo %}-->
+<!--    <p><img class="img-article-left" src="{{page.photo.url}}"></p>-->
+<!--    {% endif %}-->
 
-    {{page.content|linebreaks}}
+    {{page.content|safe}}
 
 <!--                <p class="link-read-post">-->
 <!--                        <a href="{% url 'article_comment' page.slug %}">Коментировать</a>-->

@@ -6,7 +6,9 @@
 
                 <form action="{% url 'add_article' %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
-                <!--    {{ form.as_p }}-->
+
+                        {{ form.media }}
+<!--                        {{ form.as_p }}-->
                         <div class="form-error">{{ form.non_field_errors }}</div>  <!--отображать ошибки не связанные с полями-->
                         {% for f in form %}
                         <p><label class="form-label" for="{{ f.id_for_label }}">{{f.label}}: </label>{{ f }} </p>

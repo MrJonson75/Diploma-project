@@ -19,15 +19,17 @@
         {% endwith %}
 </div>
 
-    {% if page.photo %}
-    <p><img class="img-article-left" src="{{page.photo.url}}"></p>
-    {% endif %}
+<!--    {% if page.photo %}-->
+<!--    <p><img class="img-article-left" src="{{page.photo.url}}"></p>-->
+<!--    {% endif %}-->
 
-    {{page.content|linebreaks}}
+    {{page.content|safe}}
 
-                <p class="link-read-post">
+
+                    {% if request.user.is_authenticated %}
+                        <p class="link-read-post">
                         <a href="{% url 'article_comment' page.slug %}">Коментировать</a>
-                        <a href="#">Отправить на e-mail</a>
+                    {% endif%}
                     {% if page.author == request.user %}
                         <a href="{% url 'delete_article' page.slug %}">Удалить</a>
                         <a href="{% url 'edit_page' page.slug %}">Редактировать</a>
